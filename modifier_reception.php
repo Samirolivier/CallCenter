@@ -49,29 +49,31 @@
         $paye = isset($_POST['paye']) ? 1 : 0;
         $observation = $_POST['observation'];
         $date_estimee_livraison = $_POST['date_estimee_livraison'];
+        $texte = $_POST['texte'];
         $express = isset($_POST['express']) ? 1 : 0;
 
         try {
             $stmt = $pdo->prepare("
-                UPDATE receptions
-                SET nom = :nom, prenom = :prenom, telephone = :telephone, adresse = :adresse,
-                    cadeau_id = :cadeau_id, prix = :prix, paye = :paye, observation = :observation,
-                    date_estimee_livraison = :date_estimee_livraison, express = :express
-                WHERE id = :id
-            ");
-            $stmt->execute([
-                ':nom' => $nom,
-                ':prenom' => $prenom,
-                ':telephone' => $telephone,
-                ':adresse' => $adresse,
-                ':cadeau_id' => $cadeau_id,
-                ':prix' => $prix,
-                ':paye' => $paye,
-                ':observation' => $observation,
-                ':date_estimee_livraison' => $date_estimee_livraison,
-                ':express' => $express,
-                ':id' => $id
-            ]);
+            UPDATE receptions
+            SET nom = :nom, prenom = :prenom, telephone = :telephone, adresse = :adresse,
+                cadeau_id = :cadeau_id, prix = :prix, paye = :paye, observation = :observation,
+                date_estimee_livraison = :date_estimee_livraison, express = :express, texte = :texte
+            WHERE id = :id
+        ");        
+        $stmt->execute([
+            ':nom' => $nom,
+            ':prenom' => $prenom,
+            ':telephone' => $telephone,
+            ':adresse' => $adresse,
+            ':cadeau_id' => $cadeau_id,
+            ':prix' => $prix,
+            ':paye' => $paye,
+            ':observation' => $observation,
+            ':date_estimee_livraison' => $date_estimee_livraison,
+            ':express' => $express,
+            ':texte' => $texte, // Ajoutez ce paramètre ici
+            ':id' => $id
+        ]);        
             $success = "Données mises à jour avec succès.";
         } catch (PDOException $e) {
             $error = "Erreur : " . $e->getMessage();
@@ -149,6 +151,10 @@
         <div class="mb-3">
             <label for="date_estimee_livraison" class="form-label">Date estimée de livraison</label>
             <input type="date" name="date_estimee_livraison" id="date_estimee_livraison" class="form-control" value="<?= htmlspecialchars($reception['date_estimee_livraison']) ?>" required>
+        </div>
+        <div class="mb-3">
+            <label for="texte" class="form-label">Texte</label>
+            <textarea name="texte" id="texte" class="form-control" rows="3"><?= htmlspecialchars($reception['texte']) ?></textarea>
         </div>
         <div class="form-check mb-3">
             <input type="checkbox" name="express" id="express" class="form-check-input" <?= $reception['express'] ? 'checked' : '' ?>>

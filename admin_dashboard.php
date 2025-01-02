@@ -332,12 +332,18 @@
                         <td><?= htmlspecialchars($user['email']); ?></td>
                         <td><?= htmlspecialchars($user['role']); ?></td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="delete_user" value="1">
-                                <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['id']); ?>">
-                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
-                            </form>
-                        </td>
+    <!-- Bouton de suppression -->
+    <form method="POST" class="d-inline">
+        <input type="hidden" name="delete_user" value="1">
+        <input type="hidden" name="user_id" value="<?= htmlspecialchars($user['id']); ?>">
+        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+    </form>
+
+    <!-- Lien de modification -->
+    <a href="edit_user.php?id=<?= htmlspecialchars($user['id']); ?>" class="btn btn-sm" style="background-color: #FFCA2C; color: black;">Modifier</a>
+
+</td>
+
                     </tr>
                     <?php endforeach; ?>
                     <?php else: ?>
@@ -381,20 +387,60 @@
                                 <td><?= htmlspecialchars($cadeau['id']); ?></td>
                                 <td><?= htmlspecialchars($cadeau['nom']); ?></td>
                                 <td>
-                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCadeauModal<?= $cadeau['id']; ?>">Modifier</button>
+                                    <!-- Bouton de modification -->
+                                    <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editCadeauModal<?= $cadeau['id']; ?>">
+                                        Modifier
+                                    </button>
+
+                                    <!-- Formulaire de suppression -->
                                     <form method="POST" class="d-inline">
                                         <input type="hidden" name="delete_cadeau" value="1">
                                         <input type="hidden" name="cadeau_id" value="<?= htmlspecialchars($cadeau['id']); ?>">
                                         <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                                     </form>
                                 </td>
+
+                                <!-- Modale de modification -->
+                                <div class="modal fade" id="editCadeauModal<?= $cadeau['id']; ?>" tabindex="-1" aria-labelledby="editCadeauModalLabel<?= $cadeau['id']; ?>" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <form method="POST">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editCadeauModalLabel<?= $cadeau['id']; ?>">Modifier le Cadeau</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <input type="hidden" name="cadeau_id" value="<?= htmlspecialchars($cadeau['id']); ?>">
+
+                                                    <!-- Nom du cadeau -->
+                                                    <div class="mb-3">
+                                                        <label for="nomCadeau<?= $cadeau['id']; ?>" class="form-label">Nom</label>
+                                                        <input type="text" name="nom_cadeau" id="nomCadeau<?= $cadeau['id']; ?>" class="form-control" value="<?= htmlspecialchars($cadeau['nom']); ?>" required>
+                                                    </div>
+
+                                                    <!-- Description du cadeau -->
+                                                    <div class="mb-3">
+                                                        <label for="descriptionCadeau<?= $cadeau['id']; ?>" class="form-label">Description</label>
+                                                        <textarea name="description" id="descriptionCadeau<?= $cadeau['id']; ?>" class="form-control" rows="3"><?= htmlspecialchars($cadeau['description'] ?? ''); ?></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                                    <button type="submit" name="update_cadeau" class="btn btn-primary">Enregistrer</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="3">Aucun cadeau trouvé.</td>
-                        </tr>
-                    <?php endif; ?>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="3">Aucun cadeau trouvé.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
